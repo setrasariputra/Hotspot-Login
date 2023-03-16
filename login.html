@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <meta http-equiv="expires" content="-1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" type="text/css" href="css/imgslideshow.css" />
+    <title>Internet hotspot - Log in</title>
+</head>
+
+<body>
+    <div class="imgslideshow">
+        <div class="slide">
+            <img src="img/banner-1.jpg" />
+        </div>
+        <div class="slide">
+            <img src="img/banner-2.jpg" />
+        </div>
+        <div class="slide">
+            <img src="img/banner-3.jpg" />
+        </div>
+        <div class="slide">
+            <img src="img/banner-4.jpg" />
+        </div>
+    </div>
+
+
+
+    <div class="nws-boxlogin">
+        $(if chap-id)
+        <form name="sendin" action="$(link-login-only)" method="post" style="display:none">
+            <input type="hidden" name="username" />
+            <input type="hidden" name="password" />
+            <input type="hidden" name="dst" value="$(link-orig)" />
+            <input type="hidden" name="popup" value="true" />
+        </form>
+
+        <script src="/md5.js"></script>
+        <script>
+            function doLogin() {
+                document.sendin.username.value = document.login.username.value;
+                document.sendin.password.value = hexMD5('$(chap-id)' + document.login.password.value +
+                    '$(chap-challenge)');
+                document.sendin.submit();
+                return false;
+            }
+        </script>
+        $(endif)
+        <div class="nws-formlogin">
+            <div class="logo">
+                <img src="img/logo.jpg" />
+            </div>
+            <div class="welcome-title">Login Hotspot</div>
+            <div class="form">
+                <form name="login" action="$(link-login-only)" method="post" $(if chap-id) onSubmit="return doLogin()"
+                    $(endif)>
+                    <input type="hidden" name="dst" value="$(link-orig)" />
+                    <input type="hidden" name="popup" value="true" />
+
+                    <p class="info $(if error)alert$(endif)">
+                        $(if error == "")Please log in to use the internet hotspot service $(if trial ==
+                        'yes')<br />Free trial available, <a
+                            href="$(link-login-only)?dst=$(link-orig-esc)&amp;username=T-$(mac-esc)">click
+                            here</a>.$(endif)
+                        $(endif)
+
+                        $(if error)$(error)$(endif)
+                    </p>
+
+                    <div class="row-input">
+                        <label class="form-label">Username</label>
+                        <div class="form-input">
+                            <input type="text" value="$(username)" placeholder="Username" />
+                        </div>
+                    </div>
+
+                    <div class="row-input">
+                        <label class="form-label">Password</label>
+                        <div class="form-input">
+                            <input type="password" name="password" placeholder="Password" />
+                        </div>
+                        <div class="form-link" style="display:none;"><a href="#">Forgot password?</a></div>
+                    </div>
+                    <div class="row-submit">
+                        <!-- <button type="submit">Login</button> -->
+                        <input type="submit" value="Connect" />
+                    </div>
+                    <p class="footer">Powered by MikroTik RouterOS</p>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    var slides = document.querySelectorAll('.slide');
+    var currentSlide = 0;
+    var slideInterval = setInterval(nextSlide, 5000);
+
+    function nextSlide() {
+        slides[currentSlide].classList.remove('active');
+        currentSlide = (currentSlide + 1) % slides.length;
+        slides[currentSlide].classList.add('active');
+    }
+</script>
+
+</html>
